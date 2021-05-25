@@ -10,7 +10,6 @@ import static javax.swing.JOptionPane.showConfirmDialog;
 
 public class Window extends JFrame {
     private final Controller controller;
-    private final int SIZE = 3;
     private JButton[][] buttons;
     private JPanel panel;
 
@@ -37,6 +36,7 @@ public class Window extends JFrame {
     private JPanel createGamePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 3, 1, 1));
+        int SIZE = 3;
         buttons = new JButton[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {

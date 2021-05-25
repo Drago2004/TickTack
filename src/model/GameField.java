@@ -4,7 +4,6 @@ import view.Window;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameField {
@@ -18,9 +17,7 @@ public class GameField {
     public Field getWinField(FieldStatus status) {
         FieldStatus[][] copyFields = new FieldStatus[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                copyFields[i][j] = fields[i][j];
-            }
+            System.arraycopy(fields[i], 0, copyFields[i], 0, SIZE);
         }
         for (Field field : freeFields) {
             int row = field.getRow();
