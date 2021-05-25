@@ -15,7 +15,7 @@ public class GameField {
     private List<Field> freeFields;
     private boolean stop;
 
-    public Field getCrossWinField() {
+    public Field getWinField(FieldStatus status) {
         FieldStatus[][] copyFields = new FieldStatus[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -25,8 +25,8 @@ public class GameField {
         for (Field field : freeFields) {
             int row = field.getRow();
             int column = field.getColumn();
-            copyFields[row][column] = FieldStatus.CROSS;
-            if (isWin(FieldStatus.CROSS, copyFields)) {
+            copyFields[row][column] = status;
+            if (isWin(status, copyFields)) {
                 return field;
             } else {
                 copyFields[row][column] = FieldStatus.FREE;

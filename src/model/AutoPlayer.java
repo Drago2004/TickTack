@@ -21,9 +21,11 @@ public class AutoPlayer {
                 return conerFields[index];
             }
         } else if (count < 9) {
-            // блокируем выигрышний ход крестиков
-            Field crossWinField = gameField.getCrossWinField();
-            if (crossWinField != null) {
+            Field zeroWinField = gameField.getWinField(FieldStatus.ZERO);
+            Field crossWinField = gameField.getWinField(FieldStatus.CROSS);
+            if (zeroWinField != null) { // делаем свой выигрышный ход
+                return zeroWinField;
+            } else if (crossWinField != null) { // блокируем выигрышний ход крестиков
                 return crossWinField;
             } else {// ходим в любое свободное поле
                 int index = (int) (Math.random() * (freeFields.size() - 1));
