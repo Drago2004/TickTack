@@ -4,6 +4,7 @@ import view.Window;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameField {
@@ -12,8 +13,30 @@ public class GameField {
     private int count;
     private Window window;
     private List<Field> freeFields;
+    private boolean stop;
+
+    public Field getCrossWinField() {
+        FieldStatus[][] copyFields = new FieldStatus[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                copyFields[i][j] = fields[i][j];
+            }
+        }
+        for (Field field : freeFields) {
+            int row = field.getRow();
+            int column = field.getColumn();
+            copyFields[row][column] = FieldStatus.CROSS;
+            if (isWin(FieldStatus.CROSS, copyFields)) {
+                return field;
+            } else {
+                copyFields[row][column] = FieldStatus.FREE;
+            }
+        }
+        return null;
+    }
 
     public void init() {
+        stop = false;
         fields = new FieldStatus[SIZE][SIZE];
         freeFields = new ArrayList<>(9);
         for (int i = 0; i < SIZE; i++) {
@@ -37,6 +60,7 @@ public class GameField {
             freeFields.remove(new Field(row, column));
             if (isWin(FieldStatus.CROSS)) {
                 String sign = "Крестики";
+                stop = true;
                 SwingUtilities.invokeLater(() -> {
                     window.setCross(row, column);
                     window.showWinner(sign);
@@ -50,7 +74,6 @@ public class GameField {
                 SwingUtilities.invokeLater(() -> window.setCross(row, column));
             }
         }
-
     }
 
     public void setZero(int row, int column) {
@@ -60,6 +83,7 @@ public class GameField {
             freeFields.remove(new Field(row, column));
             if (isWin(FieldStatus.ZERO)) {
                 String sign = "Нолики";
+                stop = true;
                 SwingUtilities.invokeLater(() -> {
                     window.setZero(row, column);
                     window.showWinner(sign);
@@ -96,12 +120,37 @@ public class GameField {
         return false;
     }
 
+    boolean isWin(FieldStatus status, FieldStatus[][] fld) {
+        if (status != FieldStatus.FREE) {
+            for (int i = 0; i < SIZE; i++) {
+                if ((fld[i][0] == status) && (fld[i][0] == fld[i][1]) && (fld[i][0] == fld[i][2])) {
+                    return true;
+                }
+                if ((fld[0][i] == status) && (fld[0][i] == fld[1][i]) && (fld[0][i] == fld[2][i])) {
+                    return true;
+                }
+            }
+            if (fld[1][1] == status) {
+                if ((fld[1][1] == fld[0][0]) && (fld[1][1] == fld[2][2])) {
+                    return true;
+                }
+                return (fld[1][1] == fld[2][0]) && (fld[1][1] == fld[0][2]);
+
+            }
+        }
+        return false;
+    }
+
     public List<Field> getFreeFields() {
         return freeFields;
     }
 
     public int getCount() {
         return count;
+    }
+
+    public boolean isStop() {
+        return stop;
     }
 
     public void setWindow(Window window) {

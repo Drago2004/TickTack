@@ -12,14 +12,25 @@ public class AutoPlayer {
     public Field step() {
         List<Field> freeFields = gameField.getFreeFields();
         int count = gameField.getCount();
-        if (count == 9) {
-            throw new IndexOutOfBoundsException("Ошибка! Ходы закончены.");
-        }
-        if (count == 1 && freeFields.contains(new Field(1,1))) {
-            return new Field(1, 1);
+        if (count == 1) { // сделан первый ход
+            if (freeFields.contains(new Field(1, 1))) { // ходим в центр
+                return new Field(1, 1);
+            } else { // или в угол
+                Field[] conerFields = {new Field(0, 0), new Field(0, 2), new Field(2, 0), new Field(2, 2)};
+                int index = (int) (Math.random() * conerFields.length - 1);
+                return conerFields[index];
+            }
+        } else if (count < 9) {
+            // блокируем выигрышний ход крестиков
+            Field crossWinField = gameField.getCrossWinField();
+            if (crossWinField != null) {
+                return crossWinField;
+            } else {// ходим в любое свободное поле
+                int index = (int) (Math.random() * (freeFields.size() - 1));
+                return freeFields.get(index);
+            }
         } else {
-            int index = (int) (Math.random() * (freeFields.size() - 1));
-            return freeFields.get(index);
+            throw new IndexOutOfBoundsException("Ошибка! Ходы закончены.");
         }
     }
 }

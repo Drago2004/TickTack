@@ -19,7 +19,7 @@ public class Controller {
     public void setCross(int row, int column) {
         new Thread(() -> {
             gameField.setCross(row, column);
-            if (gameField.getCount() < 9) {
+            if (!gameField.isStop() && gameField.getCount() < 9) {
                 Field freeField = autoPlayer.step();
                 gameField.setZero(freeField.getRow(), freeField.getColumn());
             }
