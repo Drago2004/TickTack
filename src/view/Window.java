@@ -26,6 +26,7 @@ public class Window extends JFrame {
         setPreferredSize(new Dimension(250, 250));
         setDefaultCloseOperation(Window.EXIT_ON_CLOSE);
         setTitle("Крестики-Нолики");
+        setLocation(500,300);
         panel=createGamePanel();
         add(panel);
         setResizable(false);
@@ -46,7 +47,7 @@ public class Window extends JFrame {
                 int column = j;
                 button.addActionListener(e -> {
                     if (button.getIcon().equals(imgFree)) {
-                        controller.setCross(row, column);
+                        controller.setStep(row, column);
                     }
                 });
                 buttons[i][j] = button;

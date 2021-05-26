@@ -146,8 +146,8 @@ public class GameField {
         return count;
     }
 
-    public boolean isStop() {
-        return stop;
+    public boolean isNotStop() {
+        return !stop;
     }
 
     public void setWindow(Window window) {
